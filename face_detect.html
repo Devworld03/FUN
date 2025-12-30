@@ -604,17 +604,16 @@
     }, 5000);
 
     // Button click handler
-    document.getElementById('continue-btn').addEventListener('click', function() {
-      if (streamRef) {
-        streamRef.getTracks().forEach(track => track.stop());
-      }
-      window.location.href = "question1.html";
-    });
-    localStorage.setItem("musicAllowed", "yes");
-  </script>
-      <audio id="bgMusic" loop>
-  <source src="static/music/bg1.mp3" type="audio/mpeg">
-</audio>
+document.getElementById('continue-btn').addEventListener('click', function() {
+  localStorage.setItem("musicAllowed", "yes");
+
+  if (streamRef) {
+    streamRef.getTracks().forEach(track => track.stop());
+  }
+  window.location.href = "question1.html";
+});
+
+
 <script>
   const bgMusic = document.getElementById("bgMusic");
 
@@ -626,8 +625,13 @@
       bgMusic.play().catch(() => {});
     }
   });
+      </script>
+      <audio id="bgMusic" loop>
+  <source src="static/music/bg1.mp3" type="audio/mpeg">
+</audio>
 </script>
 
 </body>
 
 </html>
+
