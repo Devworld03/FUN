@@ -434,7 +434,7 @@
         </button>
 
         <!-- Video -->
-       <video id="reactionVideo" playsinline controls="false" style="display:none;"></video>
+       <video id="reactionVideo" playsinline controls style="display:none;"></video>
 
 
         <!-- Text Message -->
@@ -443,8 +443,10 @@
 
     </div>
   </div>
+  const bgMusic = document.getElementById("bgMusic");
 
   <script>
+    const bgMusic = document.getElementById("bgMusic");
     // Falling stars
     const starsContainer = document.getElementById("stars");
     
@@ -471,12 +473,14 @@
     const listenBtn = document.getElementById("listenBtn");
     const disclaimer = document.getElementById("disclaimer");
     const transition = document.getElementById("transition");
+    
     function startMusic() {
-  if (bgMusic.paused) {
+  if (bgMusic && bgMusic.paused) {
     bgMusic.volume = 0.15;
     bgMusic.play().catch(() => {});
   }
 }
+
 
 
     function handleYes() {
@@ -505,8 +509,24 @@
 
       video.style.display = "block";
       video.classList.add("fade");
-      video.muted = false;
-      video.play();
+      function playVideo() {
+  listenBtn.style.display = "none";
+
+  video.style.display = "block";
+  video.classList.add("fade");
+
+  video.muted = false;
+  video.currentTime = 0;
+
+  video.play().catch(err => {
+    console.log("Video play blocked:", err);
+  });
+
+  video.onended = () => {
+    goNext("question2.html");
+  };
+}
+
 
       // After video ends → next question
       video.onended = () => {
@@ -559,4 +579,5 @@
 
 </body>
 </html>
+
 
