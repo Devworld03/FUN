@@ -434,7 +434,8 @@
         </button>
 
         <!-- Video -->
-        <video id="reactionVideo" playsinline style="display:none;"></video>
+       <video id="reactionVideo" playsinline controls="false" style="display:none;"></video>
+
 
         <!-- Text Message -->
         <div id="message"></div>
@@ -470,9 +471,20 @@
     const listenBtn = document.getElementById("listenBtn");
     const disclaimer = document.getElementById("disclaimer");
     const transition = document.getElementById("transition");
+    function startMusic() {
+  if (bgMusic.paused) {
+    bgMusic.volume = 0.15;
+    bgMusic.play().catch(() => {});
+  }
+}
+
 
     function handleYes() {
       // Hide disclaimer and buttons
+      document.querySelectorAll("button").forEach(btn => btn.disabled = true);
+
+      localStorage.setItem("musicAllowed", "yes");
+      startMusic();
       disclaimer.style.display = "none";
       document.querySelector(".buttons-container").style.display = "none";
 
@@ -482,7 +494,10 @@
       video.load();
 
       // Show listen button
-      listenBtn.style.display = "block";
+      setTimeout(() => {
+  listenBtn.style.display = "block";
+}, 500);
+
     }
 
     function playVideo() {
@@ -501,6 +516,11 @@
 
     function handleNo() {
       // Hide disclaimer and buttons
+      document.querySelectorAll("button").forEach(btn => btn.disabled = true);
+
+      localStorage.setItem("musicAllowed", "yes");
+      startMusic();
+
       disclaimer.style.display = "none";
       document.querySelector(".buttons-container").style.display = "none";
 
@@ -518,7 +538,7 @@
         window.location.href = url;
       }, 1800);
     }
-     localStorage.setItem("musicAllowed", "yes");
+     
   </script>
     <audio id="bgMusic" loop>
   <source src="static/music/bg1.mp3" type="audio/mpeg">
@@ -539,3 +559,4 @@
 
 </body>
 </html>
+
