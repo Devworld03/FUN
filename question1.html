@@ -494,9 +494,6 @@
 
     // Handle YES answer
     function handleYes() {
-      // Disable all buttons
-      document.querySelectorAll("button").forEach(btn => btn.disabled = true);
-
       // Save music preference and start music
       localStorage.setItem("musicAllowed", "yes");
       startMusic();
@@ -505,13 +502,18 @@
       disclaimer.style.display = "none";
       document.querySelector(".buttons-container").style.display = "none";
 
+      // Disable only the yes/no buttons, not all buttons
+      document.querySelector(".yes").disabled = true;
+      document.querySelector(".no").disabled = true;
+
       // Prepare video
       video.src = "static/animations/question1.mp4";
       video.load();
 
-      // Show listen button
+      // Show listen button and make sure it's enabled
       setTimeout(() => {
         listenBtn.style.display = "block";
+        listenBtn.disabled = false;
       }, 500);
     }
 
@@ -537,9 +539,6 @@
 
     // Handle NO answer
     function handleNo() {
-      // Disable all buttons
-      document.querySelectorAll("button").forEach(btn => btn.disabled = true);
-
       // Save music preference and start music
       localStorage.setItem("musicAllowed", "yes");
       startMusic();
@@ -547,6 +546,10 @@
       // Hide disclaimer and buttons
       disclaimer.style.display = "none";
       document.querySelector(".buttons-container").style.display = "none";
+
+      // Disable only the yes/no buttons
+      document.querySelector(".yes").disabled = true;
+      document.querySelector(".no").disabled = true;
 
       // Show message
       message.innerText = "Then that means you understand me better than I explain myself.";
