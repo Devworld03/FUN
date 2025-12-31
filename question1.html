@@ -434,8 +434,7 @@
         </button>
 
         <!-- Video -->
-       <video id="reactionVideo" playsinline controls style="display:none;"></video>
-
+        <video id="reactionVideo" playsinline controls style="display:none;"></video>
 
         <!-- Text Message -->
         <div id="message"></div>
@@ -444,11 +443,30 @@
     </div>
   </div>
 
+  <audio id="bgMusic" loop>
+    <source src="static/music/bg1.mp3" type="audio/mpeg">
+  </audio>
+
   <script>
+    // Get all elements first
     const bgMusic = document.getElementById("bgMusic");
-    // Falling stars
     const starsContainer = document.getElementById("stars");
-    
+    const video = document.getElementById("reactionVideo");
+    const message = document.getElementById("message");
+    const listenBtn = document.getElementById("listenBtn");
+    const disclaimer = document.getElementById("disclaimer");
+    const transition = document.getElementById("transition");
+
+    // Start background music on page load if allowed
+    window.addEventListener("load", () => {
+      const allowed = localStorage.getItem("musicAllowed");
+      if (allowed === "yes") {
+        bgMusic.volume = 0.15;
+        bgMusic.play().catch(() => {});
+      }
+    });
+
+    // Falling stars
     function createFallingStar() {
       const star = document.createElement("div");
       star.className = "star";
@@ -466,108 +484,88 @@
 
     setInterval(() => createFallingStar(), 500);
 
-    // Question logic
-    const video = document.getElementById("reactionVideo");
-    const message = document.getElementById("message");
-    const listenBtn = document.getElementById("listenBtn");
-    const disclaimer = document.getElementById("disclaimer");
-    const transition = document.getElementById("transition");
-    
+    // Start music function
     function startMusic() {
-  if (bgMusic && bgMusic.paused) {
-    bgMusic.volume = 0.15;
-    bgMusic.play().catch(() => {});
-  }
-}
+      if (bgMusic && bgMusic.paused) {
+        bgMusic.volume = 0.15;
+        bgMusic.play().catch(() => {});
+      }
+    }
 
-
-
+    // Handle YES answer
     function handleYes() {
-      // Hide disclaimer and buttons
+      // Disable all buttons
       document.querySelectorAll("button").forEach(btn => btn.disabled = true);
 
+      // Save music preference and start music
       localStorage.setItem("musicAllowed", "yes");
       startMusic();
+
+      // Hide disclaimer and buttons
       disclaimer.style.display = "none";
       document.querySelector(".buttons-container").style.display = "none";
 
       // Prepare video
       video.src = "static/animations/question1.mp4";
-      video.muted = true;
       video.load();
 
       // Show listen button
       setTimeout(() => {
-  listenBtn.style.display = "block";
-}, 500);
-
+        listenBtn.style.display = "block";
+      }, 500);
     }
 
+    // Play video when listen button is clicked
     function playVideo() {
       listenBtn.style.display = "none";
 
       video.style.display = "block";
       video.classList.add("fade");
 
+      // Play video with sound
       video.muted = false;
       video.currentTime = 0;
-
       video.play().catch(err => {
-    console.log("Video play blocked:", err);
-  });
+        console.log("Video play error:", err);
+      });
 
-  video.onended = () => {
-    goNext("question2.html");
-  };
-}
+      // Go to next page when video ends
+      video.onended = () => {
+        goNext("question2.html");
+      };
+    }
 
-
+    // Handle NO answer
     function handleNo() {
-      // Hide disclaimer and buttons
+      // Disable all buttons
       document.querySelectorAll("button").forEach(btn => btn.disabled = true);
 
+      // Save music preference and start music
       localStorage.setItem("musicAllowed", "yes");
       startMusic();
 
+      // Hide disclaimer and buttons
       disclaimer.style.display = "none";
       document.querySelector(".buttons-container").style.display = "none";
 
+      // Show message
       message.innerText = "Then that means you understand me better than I explain myself.";
       message.classList.add("fade");
 
+      // Go to next page after delay
       setTimeout(() => {
         goNext("question2.html");
       }, 2500);
     }
 
+    // Navigate to next page with transition
     function goNext(url) {
       transition.classList.add("show");
       setTimeout(() => {
         window.location.href = url;
       }, 1800);
     }
-     
   </script>
-    <audio id="bgMusic" loop>
-  <source src="static/music/bg1.mp3" type="audio/mpeg">
-</audio>
-<script>
-  const bgMusic = document.getElementById("bgMusic");
-
-  window.addEventListener("load", () => {
-    const allowed = localStorage.getItem("musicAllowed");
-
-    if (allowed === "yes") {
-      bgMusic.volume = 0.15;   // soft romantic volume
-      bgMusic.play().catch(() => {});
-    }
-  });
-</script>
-
 
 </body>
 </html>
-
-
-
-
