@@ -443,7 +443,6 @@
 
     </div>
   </div>
-  const bgMusic = document.getElementById("bgMusic");
 
   <script>
     const bgMusic = document.getElementById("bgMusic");
@@ -510,10 +509,10 @@
       video.style.display = "block";
       video.classList.add("fade");
 
-  video.muted = false;
-  video.currentTime = 0;
+      video.muted = false;
+      video.currentTime = 0;
 
-  video.play().catch(err => {
+      video.play().catch(err => {
     console.log("Video play blocked:", err);
   });
 
@@ -522,12 +521,6 @@
   };
 }
 
-
-      // After video ends → next question
-      video.onended = () => {
-        goNext("question2.html");
-      };
-    }
 
     function handleNo() {
       // Hide disclaimer and buttons
@@ -574,6 +567,7 @@
 
 </body>
 </html>
+
 
 
 
